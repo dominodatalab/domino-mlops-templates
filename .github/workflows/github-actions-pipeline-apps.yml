@@ -5,11 +5,11 @@ name: Deploy Domino Jobs
 
 on:
   push:
-    branches: [ "CSE-474-configure-app-deployment-automation" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "CSE-474-configure-app-deployment-automation" ]
+    branches: [ "main" ]
   pull_request_target:
-    branches: [ "CSE-474-configure-app-deployment-automation" ]  
+    branches: [ "main" ]  
 
 permissions:
   contents: read
