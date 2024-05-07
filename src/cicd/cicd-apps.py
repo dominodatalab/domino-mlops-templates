@@ -13,7 +13,7 @@ def parse_args():
         argparse.Namespace: Parsed arguments.
     """
     parser = argparse.ArgumentParser(description="A script to publish Domino Apps")
-    parser.add_argument("DOMINO_MODEL_OP", type=str, help="Domino Model Operation")
+    parser.add_argument("DOMINO_APP_OP", type=str, help="Domino App Operation")
     parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
     parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
     parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
@@ -58,7 +58,6 @@ def app_unpublish(domino):
 
     if response.status_code == 200:
         logging.info(f"{response.status_code}: {response.reason}")
-
 
 
 def get_owner_id(domino_url, user_api_key):
@@ -110,9 +109,9 @@ def main():
         inputs.DOMINO_API_HOST, inputs.DOMINO_USER_API_KEY, inputs.DOMINO_HARDWARE_TIER
     )
 
-    if inputs.DOMINO_MODEL_OP == "publish":
+    if inputs.DOMINO_APP_OP == "publish":
         app_publish(domino, hardware_tier_id)
-    elif inputs.DOMINO_MODEL_OP == "unpublish":
+    elif inputs.DOMINO_APP_OP == "unpublish":
         app_unpublish(domino)
 
 
