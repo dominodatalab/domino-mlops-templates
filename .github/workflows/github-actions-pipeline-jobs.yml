@@ -35,6 +35,19 @@ jobs:
         # flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v1.0.0
+      # with:
+      #   host: ${{ secrets.SONARQUBE_HOST }}
+      #   login: ${{ secrets.SONARQUBE_TOKEN }}
+      #   projectKey: "<your_project_key>"
+      #   projectName: "<your_project_name>"
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/python@master
+      # env:
+      #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      # with:
+      #   args: --severity-threshold=high
     - name: Deploy to Domino Dev
       run: |
         python src/cicd/cicd-jobs.py ${{ vars.DOMINO_ENV }} ${{ secrets.DOMINO_USER_API_KEY }}
@@ -53,6 +66,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest dominodatalab
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v1.0.0
+      # with:
+      #   host: ${{ secrets.SONARQUBE_HOST }}
+      #   login: ${{ secrets.SONARQUBE_TOKEN }}
+      #   projectKey: "<your_project_key>"
+      #   projectName: "<your_project_name>"
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/python@master
+      # env:
+      #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      # with:
+      #   args: --severity-threshold=high
     - name: Deploy to Domino Production
       run: |
         python src/cicd/cicd-jobs.py ${{ vars.DOMINO_ENV }} ${{ secrets.DOMINO_USER_API_KEY }}
