@@ -5,11 +5,11 @@ name: Deploy Domino Apps
 
 on:
   push:
-    branches: [ "CSE-475-refactor" ]
+    branches: [ "CSE-475_schedule_jobs" ]
   pull_request:
-    branches: [ "CSE-475-refactor" ]
+    branches: [ "CSE-475_schedule_jobs" ]
   pull_request_target:
-    branches: [ "CSE-475-refactor" ]  
+    branches: [ "CSE-475_schedule_jobs" ]  
 
 permissions:
   contents: read
