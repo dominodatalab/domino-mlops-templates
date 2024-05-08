@@ -4,7 +4,7 @@ import logging
 import os
 from domino import Domino
 import requests
-from utils import read_config, parse_evn_var
+from utils import read_config, parse_evn_var, parse_args
 
 env_variables = {}
 
