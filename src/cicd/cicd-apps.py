@@ -71,7 +71,7 @@ def main():
     project = f"{env_variables['DOMINO_PROJECT_OWNER']}/{env_variables['DOMINO_PROJECT_NAME']}"
     domino = Domino(
         project,
-        api_key=env_variables["DOMINO_USER_API_KEY"],
+        api_key=inputs.DOMINO_USER_API_KEY,
         host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
