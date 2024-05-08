@@ -65,7 +65,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     logging.info(env_variables["DOMINO_PROJECT_NAME"])
-    logging.info(env_variables["DOMINO_USER_API_KEY"])
+    logging.info(inputs.DOMINO_USER_API_KEY)
     logging.info(env_variables["DOMINO_API_HOST"])
 
     project = f"{env_variables['DOMINO_PROJECT_OWNER']}/{env_variables['DOMINO_PROJECT_NAME']}"
