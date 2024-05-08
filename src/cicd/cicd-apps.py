@@ -1,63 +1,12 @@
 #!/usr/bin/env python
 import argparse
 import logging
+import os
 from domino import Domino
 import requests
+from utils import read_config, parse_evn_var, parse_args
 
-
-def parse_args():
-    """
-    Parse command line arguments.
-
-    Returns:
-        argparse.Namespace: Parsed arguments.
-    """
-    parser = argparse.ArgumentParser(description="A script to publish Domino Apps")
-    parser.add_argument("DOMINO_APP_OP", type=str, help="Domino App Operation")
-    parser.add_argument("DOMINO_PROJECT_OWNER", type=str, help="Domino Project Owner.")
-    parser.add_argument("DOMINO_PROJECT_NAME", type=str, help="Domino Project Name.")
-    parser.add_argument("DOMINO_USER_API_KEY", type=str, help="Domino user API Key.")
-    parser.add_argument(
-        "DOMINO_API_HOST",
-        type=str,
-        help="Domino URL for external or http://nucleus-frontend.domino-platform:80 from a workspace.",
-    )
-    parser.add_argument(
-        "DOMINO_HARDWARE_TIER", type=str, help="Domino hardware tier for the app"
-    )
-    args = parser.parse_args()
-    return args
-
-
-def app_publish(domino, hardwareTierId=None):
-    """
-    Publish a brand new app.
-
-    Args:
-        domino (Domino): Domino object.
-        hardwareTierId (str): Hardware tier ID.
-    """
-
-    response = domino.app_publish(
-        unpublishRunningApps=True, hardwareTierId=hardwareTierId
-    )
-
-    if response.status_code == 200:
-        logging.info(f"{response.status_code}: {response.reason}")
-
-
-def app_unpublish(domino):
-    """
-    Unpublish app.
-
-    Args:
-        domino (Domino): Domino object.
-    """
-    # Unpublish app
-    response = domino.app_unpublish()
-
-    if response.status_code == 200:
-        logging.info(f"{response.status_code}: {response.reason}")
+env_variables = {}
 
 
 def get_owner_id(domino_url, user_api_key):
@@ -65,6 +14,16 @@ def get_owner_id(domino_url, user_api_key):
     url = f"https://{domino_url}/v4/users/self"
     headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, headers=headers)
+    return response.json()
+
+
+def get_project_id(domino_url, project_name, user_api_key):
+    owner_id = get_owner_id(domino_url, user_api_key).get("id")
+    logging.info(f"Getting project id for owner id: {owner_id}")
+    url = f"https://{domino_url}/v4/projects"
+    params = {"name": project_name, "ownerId": owner_id}
+    headers = {"X-Domino-Api-Key": user_api_key}
+    response = requests.get(url, params=params, headers=headers)
     return response.json()
 
 
@@ -85,33 +44,46 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     return tier_id
 
 
-def main():
-    """
-    Main function to execute the script.
-    """
-    inputs = parse_args()
+def app_publish(domino, hardwareTierId=None):
+    response = domino.app_publish(
+        unpublishRunningApps=True, hardwareTierId=hardwareTierId
+    )
+    if response.status_code == 200:
+        logging.info(f"{response.status_code}: {response.reason}")
 
-    # Configure logging
+
+def app_unpublish(domino):
+    response = domino.app_unpublish()
+    if response.status_code == 200:
+        logging.info(f"{response.status_code}: {response.reason}")
+
+
+def main():
+    inputs = parse_args()
+    parse_evn_var(env_variables, inputs.DOMINO_ENV)
+
     logging.basicConfig(level=logging.INFO)
 
-    logging.info(inputs.DOMINO_PROJECT_NAME)
+    logging.info(env_variables["DOMINO_PROJECT_NAME"])
     logging.info(inputs.DOMINO_USER_API_KEY)
-    logging.info(inputs.DOMINO_API_HOST)
+    logging.info(env_variables["DOMINO_API_HOST"])
 
-    project = f"{inputs.DOMINO_PROJECT_OWNER}/{inputs.DOMINO_PROJECT_NAME}"
+    project = f"{env_variables['DOMINO_PROJECT_OWNER']}/{env_variables['DOMINO_PROJECT_NAME']}"
     domino = Domino(
         project,
         api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{inputs.DOMINO_API_HOST}",
+        host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
 
     hardware_tier_id = get_hardware_tier_id(
-        inputs.DOMINO_API_HOST, inputs.DOMINO_USER_API_KEY, inputs.DOMINO_HARDWARE_TIER
+        env_variables["DOMINO_API_HOST"],
+        inputs.DOMINO_USER_API_KEY,
+        env_variables["DOMINO_HARDWARE_TIER_NAME"],
     )
 
-    if inputs.DOMINO_APP_OP == "publish":
+    if env_variables["DOMINO_APP_OP"] == "publish":
         app_publish(domino, hardware_tier_id)
-    elif inputs.DOMINO_APP_OP == "unpublish":
+    elif env_variables["DOMINO_APP_OP"] == "unpublish":
         app_unpublish(domino)
 
 
