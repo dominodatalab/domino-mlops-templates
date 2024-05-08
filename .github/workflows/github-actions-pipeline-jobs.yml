@@ -37,16 +37,14 @@ jobs:
         # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: SonarQube Scan
       run: |
-        # Placeholder for SonarQube Scan
         # uses: sonarsource/sonarqube-scan-action@v1.0.0
         # with:
         #   host: ${{ secrets.SONARQUBE_HOST }}
         #   login: ${{ secrets.SONARQUBE_TOKEN }}
         #   projectKey: "<your_project_key>"
         #   projectName: "<your_project_name>"
-    - name: Run Snyk to check for vulnerabilities
+    - name: Snyk Vulnerability Scan
       run: |
-        # Placeholder for Snyk Vulnerability Scan
         # uses: snyk/actions/python@master
         # env:
         #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
