@@ -6,6 +6,8 @@ from domino import Domino
 import requests
 from utils import read_config, parse_evn_var
 
+env_variables = {}
+
 
 def get_owner_id(domino_url, user_api_key):
     logging.info(f"Getting Owner Id for the api key {user_api_key}")
@@ -57,9 +59,8 @@ def app_unpublish(domino):
 
 
 def main():
-    env = os.getenv("DOMINO_ENV")
-    env_variables = {}
-    env_variables = parse_evn_var(env_variables, env)
+    inputs = parse_args()
+    parse_evn_var(env_variables, inputs.DOMINO_ENV)
 
     logging.basicConfig(level=logging.INFO)
 
