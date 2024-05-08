@@ -5,11 +5,11 @@ name: Deploy Domino Model
 
 on:
   push:
-    branches: [ "CSE-475-refactor" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "CSE-475-refactor" ]
+    branches: [ "main" ]
   pull_request_target:
-    branches: [ "CSE-475-refactor" ]  
+    branches: [ "main" ]  
 
 permissions:
   contents: read
