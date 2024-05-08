@@ -77,7 +77,7 @@ def main():
 
     hardware_tier_id = get_hardware_tier_id(
         env_variables["DOMINO_API_HOST"],
-        env_variables["DOMINO_USER_API_KEY"],
+        inputs.DOMINO_USER_API_KEY,
         env_variables["DOMINO_HARDWARE_TIER_NAME"],
     )
 
