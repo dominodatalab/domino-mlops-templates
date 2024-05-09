@@ -66,7 +66,7 @@ def main():
     domino_url = env_variables["DOMINO_API_HOST"]
 
     project_id = get_project_id(
-        domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key
+        domino_url, env_variables["DOMINO_PROJECT_NAME"], inputs.DOMINO_USER_API_KEY
     )
     print(project_id[0].get("id"))
 
