@@ -69,6 +69,7 @@ def main():
     project_id = get_project_id(
         domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key
     )
+    print("TEST TEST")
     print(project_id[0].get("id"))
 
     cron_string = env_variables["DOMINO_JOB_CRON"]
