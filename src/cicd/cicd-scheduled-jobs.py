@@ -69,8 +69,7 @@ def main():
     project_id = get_project_id(
         domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key
     )
-    print("TEST TEST")
-    print(project_id[0].get("id"))
+    test_id = project_id[0].get("id")
 
     cron_string = env_variables["DOMINO_JOB_CRON"]
     job_command = env_variables["DOMINO_JOB_COMMAND"]
@@ -92,7 +91,7 @@ def main():
         "environmentRevisionSpec": "ActiveRevision",
     }
 
-    response = create_scheduled_job(domino_url, project_id, user_api_key, job_details)
+    response = create_scheduled_job(domino_url, test_id, user_api_key, job_details)
     print("Scheduled job created:", response)
 
 
