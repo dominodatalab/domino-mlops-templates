@@ -66,13 +66,9 @@ def main():
     domino_url = env_variables["DOMINO_API_HOST"]
 
     project_id = get_project_id(
-        domino_url, env_variables["DOMINO_PROJECT_NAME"], inputs.DOMINO_USER_API_KEY
+        domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key
     )
-
-    if project_id:
-        print("Project ID:", project_id)
-    else:
-        print("Failed to retrieve Project ID")
+    print(project_id[0].get("id"))
 
     user_api_key = inputs.DOMINO_USER_API_KEY
     cron_string = env_variables["DOMINO_JOB_CRON"]
