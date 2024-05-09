@@ -64,13 +64,13 @@ def main():
     logging.info(env_variables["DOMINO_API_HOST"])
 
     domino_url = env_variables["DOMINO_API_HOST"]
+    user_api_key = inputs.DOMINO_USER_API_KEY
 
     project_id = get_project_id(
-        domino_url, env_variables["DOMINO_PROJECT_NAME"], inputs.DOMINO_USER_API_KEY
+        domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key
     )
     print(project_id[0].get("id"))
 
-    user_api_key = inputs.DOMINO_USER_API_KEY
     cron_string = env_variables["DOMINO_JOB_CRON"]
     job_command = env_variables["DOMINO_JOB_COMMAND"]
 
