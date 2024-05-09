@@ -51,10 +51,8 @@ def create_scheduled_job(domino_url, project_id, user_api_key, job_details):
     headers = {"X-Domino-Api-Key": user_api_key, "Content-Type": "application/json"}
     response = requests.post(url, headers=headers, json=job_details)
     logging.info("HTTP Status Code: %s", response.status_code)
-    logging.info(
-        "Response Body: %s", response.text
-    )  # Temporarily log the raw response text
-    return response.json()  # This line will remain the same
+    logging.info("Response Body: %s", response.text)
+    return response.json()
 
 
 def main():
@@ -76,6 +74,7 @@ def main():
     job_command = env_variables["DOMINO_JOB_COMMAND"]
 
     job_details = {
+        "title": "scheduled Job",
         "command": job_command,
         "schedule": {
             "cronString": cron_string,
@@ -86,6 +85,9 @@ def main():
         "allowConcurrentExecution": False,
         "hardwareTierIdentifier": env_variables["DOMINO_HARDWARE_TIER_NAME"],
         "overrideEnvironmentId": env_variables["DOMINO_ENVIRONMENT_ID"],
+        "scheduledByUserId": "66151350631ba025af570cf2",
+        "notifyOnCompleteEmailAddresses": ["ben.wolstenholme+test@dominodatalab.com"],
+        "environmentRevisionSpec": "ActiveRevision",
     }
 
     response = create_scheduled_job(domino_url, project_id, user_api_key, job_details)
