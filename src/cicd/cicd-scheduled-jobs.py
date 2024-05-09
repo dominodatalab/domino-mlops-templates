@@ -50,7 +50,11 @@ def create_scheduled_job(domino_url, project_id, user_api_key, job_details):
     url = f"https://{domino_url}/projects/{project_id}/scheduledjobs"
     headers = {"X-Domino-Api-Key": user_api_key, "Content-Type": "application/json"}
     response = requests.post(url, headers=headers, json=job_details)
-    return response.json()
+    logging.info("HTTP Status Code: %s", response.status_code)
+    logging.info(
+        "Response Body: %s", response.text
+    )  # Temporarily log the raw response text
+    return response.json()  # This line will remain the same
 
 
 def main():
