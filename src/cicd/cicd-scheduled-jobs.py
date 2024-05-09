@@ -47,7 +47,7 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
 
 
 def create_scheduled_job(domino_url, project_id, user_api_key, job_details):
-    url = f"https://{domino_url}/projects/{project_id}/scheduledjobs"
+    url = f"https://{domino_url}/v4/projects/{project_id}/scheduledjobs"
     headers = {"X-Domino-Api-Key": user_api_key, "Content-Type": "application/json"}
     response = requests.post(url, headers=headers, json=job_details)
     # logging.info("HTTP Status Code: %s", response.status_code)
