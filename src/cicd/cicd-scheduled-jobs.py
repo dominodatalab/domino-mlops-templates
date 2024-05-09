@@ -60,7 +60,6 @@ def main():
     logging.info(env_variables["DOMINO_PROJECT_NAME"])
     logging.info(inputs.DOMINO_USER_API_KEY)
     logging.info(env_variables["DOMINO_API_HOST"])
-    logging.info(env_variables["DOMINO_JOB_CRON"])
 
     domino_url = env_variables["DOMINO_API_HOST"]
 
@@ -73,7 +72,6 @@ def main():
     job_command = env_variables["DOMINO_JOB_COMMAND"]
 
     job_details = {
-        "title": "Test Title",
         "command": job_command,
         "schedule": {
             "cronString": cron_string,
