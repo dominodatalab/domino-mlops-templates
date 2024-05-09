@@ -57,15 +57,18 @@ def main():
     inputs = parse_args()
     parse_evn_var(env_variables, inputs.DOMINO_ENV)
 
+    logging.info(env_variables["DOMINO_PROJECT_NAME"])
+    logging.info(inputs.DOMINO_USER_API_KEY)
+    logging.info(env_variables["DOMINO_API_HOST"])
+
     domino_url = env_variables["DOMINO_API_HOST"]
+
     project_id = get_project_id(
-        domino_url,
-        env_variables["DOMINO_PROJECT_NAME"],
-        env_variables["DOMINO_USER_API_KEY"],
+        domino_url, env_variables["DOMINO_PROJECT_NAME"], inputs.DOMINO_USER_API_KEY
     )
 
-    user_api_key = env_variables["DOMINO_USER_API_KEY"]
-    cron_string = env_variables("DOMINO_JOB_CRON")
+    user_api_key = inputs.DOMINO_USER_API_KEY
+    cron_string = env_variables["DOMINO_JOB_CRON"]
     job_command = env_variables["DOMINO_JOB_COMMAND"]
 
     job_details = {
