@@ -26,7 +26,16 @@ def get_project_id(domino_url, project_name, user_api_key):
     params = {"name": project_name, "ownerId": owner_id}
     headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, params=params, headers=headers)
-    return response.json()
+    if response.status_code != 200:
+        logging.error(f"Failed to fetch project ID: {response.text}")
+        return None
+    try:
+        data = response.json()
+        project_id = data[0]["id"]
+        return project_id
+    except (IndexError, KeyError, TypeError):
+        logging.error(f"Error parsing project ID from response: {response.text}")
+        return None
 
 
 def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
