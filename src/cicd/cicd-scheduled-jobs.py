@@ -10,6 +10,13 @@ from utils import parse_args as parse_args
 
 env_variables = {}
 
+def get_owner_id(domino_url, user_api_key):
+    logging.info(f"Getting Owner Id for the api key {user_api_key}")
+    url = f"https://{domino_url}/v4/users/self"
+    headers = {"X-Domino-Api-Key": user_api_key}
+    response = requests.get(url, headers=headers)
+    return response.json()
+
 def get_user_id(domino, username_or_email):
     userid = domino.get_user_id(username_or_email)
     return userid
@@ -55,6 +62,8 @@ def main():
     )
     test_id = project_id[0].get("id")
 
+    calling_id = get_owner_id(domino_url, user_api_key).get("id")
+
     cron_string = env_variables["DOMINO_JOB_CRON"]
     job_command = env_variables["DOMINO_JOB_COMMAND"]
 
@@ -70,7 +79,7 @@ def main():
         "allowConcurrentExecution": True,
         "hardwareTierIdentifier": env_variables["DOMINO_HARDWARE_TIER_NAME"],
         "overrideEnvironmentId": env_variables["DOMINO_ENVIRONMENT_ID"],
-        "scheduledByUserId": owner_id,
+        "scheduledByUserId": calling_id,
         "notifyOnCompleteEmailAddresses": ["bryan.prosser+changeadminuk2@dominodatalab.com"],
         "environmentRevisionSpec": "ActiveRevision",
     }
