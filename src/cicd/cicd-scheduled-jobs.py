@@ -50,7 +50,7 @@ def main():
         api_key=inputs.DOMINO_USER_API_KEY,
         host=f"https://{env_variables['DOMINO_API_HOST']}",
     )
-    owner_id = get_owner_id(domino, env_variables["DOMINO_PROJECT_OWNER"])
+    owner_id = get_user_id(domino, env_variables["DOMINO_PROJECT_OWNER"])
     project_id = get_project_id(
         domino_url, env_variables["DOMINO_PROJECT_NAME"], owner_id, user_api_key
     )
