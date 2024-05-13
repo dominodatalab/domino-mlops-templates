@@ -26,6 +26,7 @@ def get_project_id(domino_url, project_name, user_api_key):
     params = {"name": project_name, "ownerId": owner_id}
     headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, params=params, headers=headers)
+    print(response)
     return response.json()
 
 
