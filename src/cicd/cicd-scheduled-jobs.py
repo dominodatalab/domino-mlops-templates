@@ -20,7 +20,6 @@ def get_project_id(domino_url, project_name, owner_id, user_api_key):
     params = {"name": project_name, "ownerId": owner_id}
     headers = {"X-Domino-Api-Key": user_api_key}
     response = requests.get(url, params=params, headers=headers)
-    print(response)
     return response.json()
 
 
@@ -71,7 +70,7 @@ def main():
         "allowConcurrentExecution": True,
         "hardwareTierIdentifier": env_variables["DOMINO_HARDWARE_TIER_NAME"],
         "overrideEnvironmentId": env_variables["DOMINO_ENVIRONMENT_ID"],
-        "scheduledByUserId": "66151350631ba025af570cf2",
+        "scheduledByUserId": owner_id,
         "notifyOnCompleteEmailAddresses": ["ben.wolstenholme+test@dominodatalab.com"],
         "environmentRevisionSpec": "ActiveRevision",
     }
