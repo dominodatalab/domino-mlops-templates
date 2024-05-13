@@ -63,7 +63,7 @@ def parse_evn_var(env_variables, section):
     env_variables["DOMINO_JOB_HARDWARE_TIER_NAME"] = read_config(
         section, "domino_job_hardware_tier_name"
     )
-
+    env_variables["DOMINO_JOB_CRON"] = read_config(section, "domino_job_cron")
     env_variables["DOMINO_APP_OP"] = read_config(section, "domino_app_op")
 
     return env_variables

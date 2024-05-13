@@ -46,23 +46,13 @@ def get_hardware_tier_id(domino_url, user_api_key, hardware_tier_name):
     return tier_id
 
 
-def job_start(
-    domino,
-    command,
-    hardware_tier_id,
-    environment_id,
-):
-
-    response = domino.job_start(
-        command,
-        hardware_tier_name=hardware_tier_id,
-        environment_id=environment_id,
-    )
-    print("job id :: ", response)
-
-
-def job_stop(domino, job_id):
-    domino.job_stop(job_id)
+def create_scheduled_job(domino_url, project_id, user_api_key, job_details):
+    url = f"https://{domino_url}/v4/projects/{project_id}/scheduledjobs"
+    headers = {"X-Domino-Api-Key": user_api_key, "Content-Type": "application/json"}
+    response = requests.post(url, headers=headers, json=job_details)
+    logging.info("HTTP Status Code: %s", response.status_code)
+    logging.info("Response Body: %s", response.text)
+    return response.json()
 
 
 def main():
@@ -72,24 +62,37 @@ def main():
     logging.info(env_variables["DOMINO_PROJECT_NAME"])
     logging.info(inputs.DOMINO_USER_API_KEY)
     logging.info(env_variables["DOMINO_API_HOST"])
+
     domino_url = env_variables["DOMINO_API_HOST"]
+    user_api_key = inputs.DOMINO_USER_API_KEY
 
-    project = f"{env_variables['DOMINO_PROJECT_OWNER']}/{env_variables['DOMINO_PROJECT_NAME']}"
-    domino = Domino(
-        project,
-        api_key=inputs.DOMINO_USER_API_KEY,
-        host=f"https://{env_variables['DOMINO_API_HOST']}",
+    project_id = get_project_id(
+        domino_url, env_variables["DOMINO_PROJECT_NAME"], user_api_key
     )
+    test_id = project_id[0].get("id")
 
-    if env_variables["DOMINO_JOB_OP"] == "start":
-        job_start(
-            domino,
-            env_variables["DOMINO_JOB_COMMAND"],
-            env_variables["DOMINO_JOB_HARDWARE_TIER_NAME"],
-            env_variables["DOMINO_JOB_ENVIRONMENT_ID"],
-        )
-    elif env_variables["DOMINO_JOB_OP"] == "stop":
-        job_stop(domino, env_variables["DOMINO_JOB_ID"])
+    cron_string = env_variables["DOMINO_JOB_CRON"]
+    job_command = env_variables["DOMINO_JOB_COMMAND"]
+
+    job_details = {
+        "title": "scheduled Job",
+        "command": job_command,
+        "schedule": {
+            "cronString": cron_string,
+            "isCustom": True,
+        },
+        "timezoneId": "UTC",
+        "isPaused": False,
+        "allowConcurrentExecution": True,
+        "hardwareTierIdentifier": env_variables["DOMINO_HARDWARE_TIER_NAME"],
+        "overrideEnvironmentId": env_variables["DOMINO_ENVIRONMENT_ID"],
+        "scheduledByUserId": "66151350631ba025af570cf2",
+        "notifyOnCompleteEmailAddresses": ["ben.wolstenholme+test@dominodatalab.com"],
+        "environmentRevisionSpec": "ActiveRevision",
+    }
+
+    response = create_scheduled_job(domino_url, test_id, user_api_key, job_details)
+    print("Scheduled job created:", response)
 
 
 if __name__ == "__main__":
