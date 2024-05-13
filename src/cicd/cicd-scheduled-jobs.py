@@ -71,7 +71,7 @@ def main():
         "hardwareTierIdentifier": env_variables["DOMINO_HARDWARE_TIER_NAME"],
         "overrideEnvironmentId": env_variables["DOMINO_ENVIRONMENT_ID"],
         "scheduledByUserId": owner_id,
-        "notifyOnCompleteEmailAddresses": ["ben.wolstenholme+test@dominodatalab.com"],
+        "notifyOnCompleteEmailAddresses": ["bryan.prosser+changeadminuk2@dominodatalab.com"],
         "environmentRevisionSpec": "ActiveRevision",
     }
 
