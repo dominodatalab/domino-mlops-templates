@@ -83,7 +83,7 @@ def main():
         },
         "timezoneId": "UTC",
         "isPaused": False,
-        "allowConcurrentExecution": False,
+        "allowConcurrentExecution": True,
         "hardwareTierIdentifier": env_variables["DOMINO_HARDWARE_TIER_NAME"],
         "overrideEnvironmentId": env_variables["DOMINO_ENVIRONMENT_ID"],
         "scheduledByUserId": "66151350631ba025af570cf2",
