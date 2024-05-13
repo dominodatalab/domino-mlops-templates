@@ -5,11 +5,11 @@ name: Deploy Domino Apps
 
 on:
   push:
-    branches: [ "CSE-475_Update_Jobs" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "CSE-475_Update_Jobs" ]
+    branches: [ "main" ]
   pull_request_target:
-    branches: [ "CSE-475_Update_Jobs" ]  
+    branches: [ "main" ]  
 
 permissions:
   contents: read
