@@ -43,6 +43,7 @@ def main():
 
     domino_url = env_variables["DOMINO_API_HOST"]
     user_api_key = inputs.DOMINO_USER_API_KEY
+    project = env_variables["DOMINO_PROJECT_OWNER"] + "/" + env_variables["DOMINO_PROJECT_NAME"]
     
     domino = Domino(
         project,
